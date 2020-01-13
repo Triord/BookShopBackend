@@ -1,1 +1,293 @@
 
+USE [master]
+GO
+/****** Object:  Database [ecole]    Script Date: 13-01-20 18:01:57 ******/
+CREATE DATABASE [ecole]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'ecole', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\MSSQL\DATA\ecole.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'ecole_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\MSSQL\DATA\ecole_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+GO
+ALTER DATABASE [ecole] SET COMPATIBILITY_LEVEL = 140
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [ecole].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [ecole] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [ecole] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [ecole] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [ecole] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [ecole] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [ecole] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [ecole] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [ecole] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [ecole] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [ecole] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [ecole] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [ecole] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [ecole] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [ecole] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [ecole] SET  ENABLE_BROKER 
+GO
+ALTER DATABASE [ecole] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [ecole] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [ecole] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [ecole] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [ecole] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [ecole] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [ecole] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [ecole] SET RECOVERY FULL 
+GO
+ALTER DATABASE [ecole] SET  MULTI_USER 
+GO
+ALTER DATABASE [ecole] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [ecole] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [ecole] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [ecole] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [ecole] SET DELAYED_DURABILITY = DISABLED 
+GO
+EXEC sys.sp_db_vardecimal_storage_format N'ecole', N'ON'
+GO
+ALTER DATABASE [ecole] SET QUERY_STORE = OFF
+GO
+USE [ecole]
+GO
+/****** Object:  Table [dbo].[amendes]    Script Date: 13-01-20 18:01:57 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[amendes](
+	[idAmende] [int] IDENTITY(1,1) NOT NULL,
+	[dateAmende] [date] NULL,
+	[delaiDepassement] [int] NULL,
+	[montant] [decimal](6, 3) NULL,
+	[idUtilisateur] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[idAmende] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[bibliotheques]    Script Date: 13-01-20 18:01:57 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[bibliotheques](
+	[idBibliot] [int] IDENTITY(1,1) NOT NULL,
+	[nom] [varchar](250) NULL,
+	[adresse] [varchar](250) NULL,
+	[localisation] [varchar](300) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[idBibliot] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[critiques]    Script Date: 13-01-20 18:01:57 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[critiques](
+	[idCritique] [int] IDENTITY(1,1) NOT NULL,
+	[commentaires] [varchar](250) NULL,
+	[notes] [int] NULL,
+	[idLivre] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[idCritique] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[echanges]    Script Date: 13-01-20 18:01:57 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[echanges](
+	[idEchange] [int] IDENTITY(1,1) NOT NULL,
+	[question] [varchar](300) NULL,
+	[reponse] [varchar](300) NULL,
+	[idUtilisateur] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[idEchange] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[exemplaires]    Script Date: 13-01-20 18:01:57 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[exemplaires](
+	[idExemplaire] [int] IDENTITY(1,1) NOT NULL,
+	[etat] [bit] NULL,
+	[idLivre] [int] NULL,
+	[idBibliot] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[idExemplaire] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[livre]    Script Date: 13-01-20 18:01:57 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[livre](
+	[idLivre] [int] IDENTITY(1,1) NOT NULL,
+	[nom] [varchar](250) NULL,
+	[isbn] [varchar](250) NULL,
+	[descriptif] [varchar](3000) NULL,
+	[prix] [decimal](6, 3) NULL,
+	[edition] [varchar](250) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[idLivre] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[locations]    Script Date: 13-01-20 18:01:57 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[locations](
+	[idLocation] [int] IDENTITY(1,1) NOT NULL,
+	[dDebutLocation] [date] NULL,
+	[dFinLocation] [date] NULL,
+	[dateLocation] [date] NULL,
+	[idExemplaire] [int] NULL,
+	[idUtilisateur] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[idLocation] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[redevances]    Script Date: 13-01-20 18:01:57 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[redevances](
+	[idRedevance] [int] IDENTITY(1,1) NOT NULL,
+	[datePaiementRedevance] [date] NULL,
+	[dateFinRedevance] [date] NULL,
+	[montant] [decimal](6, 3) NULL,
+	[idUtilisateur] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[idRedevance] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[roles]    Script Date: 13-01-20 18:01:57 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[roles](
+	[idRole] [int] IDENTITY(1,1) NOT NULL,
+	[nom] [varchar](250) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[idRole] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[roleUser]    Script Date: 13-01-20 18:01:57 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[roleUser](
+	[idUtilisateur] [int] NULL,
+	[idRole] [int] NULL
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[utilisateurs]    Script Date: 13-01-20 18:01:57 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[utilisateurs](
+	[idUtilisateur] [int] IDENTITY(1,1) NOT NULL,
+	[nom] [varchar](250) NULL,
+	[prenom] [varchar](250) NULL,
+	[ddn] [date] NULL,
+	[numNat] [varchar](250) NULL,
+	[email] [varchar](250) NULL,
+	[mdp] [varchar](250) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[idUtilisateur] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[amendes]  WITH CHECK ADD FOREIGN KEY([idUtilisateur])
+REFERENCES [dbo].[utilisateurs] ([idUtilisateur])
+GO
+ALTER TABLE [dbo].[critiques]  WITH CHECK ADD FOREIGN KEY([idLivre])
+REFERENCES [dbo].[livre] ([idLivre])
+GO
+ALTER TABLE [dbo].[echanges]  WITH CHECK ADD FOREIGN KEY([idUtilisateur])
+REFERENCES [dbo].[utilisateurs] ([idUtilisateur])
+GO
+ALTER TABLE [dbo].[exemplaires]  WITH CHECK ADD FOREIGN KEY([idBibliot])
+REFERENCES [dbo].[bibliotheques] ([idBibliot])
+GO
+ALTER TABLE [dbo].[exemplaires]  WITH CHECK ADD FOREIGN KEY([idLivre])
+REFERENCES [dbo].[livre] ([idLivre])
+GO
+ALTER TABLE [dbo].[locations]  WITH CHECK ADD FOREIGN KEY([idExemplaire])
+REFERENCES [dbo].[exemplaires] ([idExemplaire])
+GO
+ALTER TABLE [dbo].[locations]  WITH CHECK ADD FOREIGN KEY([idUtilisateur])
+REFERENCES [dbo].[utilisateurs] ([idUtilisateur])
+GO
+ALTER TABLE [dbo].[redevances]  WITH CHECK ADD FOREIGN KEY([idUtilisateur])
+REFERENCES [dbo].[utilisateurs] ([idUtilisateur])
+GO
+ALTER TABLE [dbo].[roleUser]  WITH CHECK ADD FOREIGN KEY([idRole])
+REFERENCES [dbo].[roles] ([idRole])
+GO
+ALTER TABLE [dbo].[roleUser]  WITH CHECK ADD FOREIGN KEY([idUtilisateur])
+REFERENCES [dbo].[utilisateurs] ([idUtilisateur])
+GO
+USE [master]
+GO
+ALTER DATABASE [ecole] SET  READ_WRITE 
+GO
