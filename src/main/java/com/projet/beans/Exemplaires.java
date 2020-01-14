@@ -29,6 +29,9 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name = "exemplaires")
+@JsonIdentityInfo(
+		generator = ObjectIdGenerators.PropertyGenerator.class,
+		property = "id")
 public class Exemplaires {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,11 +42,11 @@ public class Exemplaires {
 	int etat;
 
 	@ManyToOne
-	@JoinColumn(referencedColumnName = "idlivre", nullable = false)
+	@JoinColumn(name = "idlivre", nullable = false)
 	private Livres livres;
 
 	@ManyToOne
-	@JoinColumn (referencedColumnName = "idBibliot", nullable = false)
+	@JoinColumn(name = "idBibliot", nullable = false)
 	private Bibliotheque bibliotheques;
 
 
@@ -66,7 +69,6 @@ public class Exemplaires {
 	}
 
 
-	@JsonIgnore
 	public Livres getLivres() {
 		return livres;
 	}
