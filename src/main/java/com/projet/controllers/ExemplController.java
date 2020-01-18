@@ -3,6 +3,7 @@ package com.projet.controllers;
 import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,16 +35,10 @@ public class ExemplController {
 	private ExemplServiceImpl exService;
 
 	@GetMapping("/exemplaire")
-	public List<Exemplaires> allExemplaire(Model model) {
-		List<Exemplaires> ex = (List<Exemplaires>) exRepo.findAll();
-		//model.addAttribute("livree",book);
-		return ex;
+	public Set<Exemplaires> allExemplaire(Model model) {
+		return exService.allEx();
 	}
-	@GetMapping("exEtat")
-	public List<Exemplaires> etatEx(Model model){
-		List<Exemplaires> ex = (List<Exemplaires>) exRepo.findExemplaire();
-		return ex;
-	}
+	
 	@PostMapping("/exemplaire")
 	public Exemplaires addEx(@RequestBody Exemplaires ex) {
 		return exRepo.save(ex);
