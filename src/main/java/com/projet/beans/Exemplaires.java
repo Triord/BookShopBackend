@@ -1,8 +1,10 @@
 package com.projet.beans;
 
 import java.util.HashSet;
+import java.beans.Transient;
 import java.util.*;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -41,17 +43,17 @@ public class Exemplaires {
 	@Column(name="etat")
 	int etat;
 
-	@ManyToOne
+	@ManyToOne(cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "idlivre", nullable = false)
 	private Livres livres;
 
-	@ManyToOne
+	@ManyToOne(cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "idBibliot", nullable = false)
 	private Bibliotheque bibliotheques;
 
 
 
-
+	
 	public int getId() {
 		return id;
 	}

@@ -51,9 +51,7 @@ public class Livres {
 	@Column(name="edition")
 	String edition;
 
-	@OneToMany(
-			mappedBy = "livres"
-			)	
+	@OneToMany(mappedBy = "livres",orphanRemoval = true,fetch = FetchType.LAZY,cascade = CascadeType.DETACH)	
 	private Set<Exemplaires> ex;
 
 	public int getIdlivre() {

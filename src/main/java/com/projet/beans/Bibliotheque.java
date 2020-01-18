@@ -45,10 +45,11 @@ public class Bibliotheque{
 	private String localisation;
 
 
-	@OneToMany(mappedBy = "bibliotheques")
+	@OneToMany(mappedBy = "bibliotheques",fetch = FetchType.LAZY,cascade = CascadeType.DETACH)
 	public Set<Exemplaires> ex;
 
-	
+//	@OneToMany(mappedBy = "bibliotheques",fetch = FetchType.LAZY)
+	//public Set<Livres> livre;
 
 	public void setEx(Set<Exemplaires> ex) {
 		this.ex = ex;
@@ -93,6 +94,8 @@ public class Bibliotheque{
 	public void setExemplaires(Set<Exemplaires> ex) {
 		this.ex = ex;
 	}
+
+	
 	
 	
 	

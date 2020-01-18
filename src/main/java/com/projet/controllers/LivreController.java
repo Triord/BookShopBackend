@@ -2,9 +2,11 @@ package com.projet.controllers;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,11 +32,10 @@ public class LivreController {
 
 
 	@GetMapping("/Livres")
-	public List<Livres> allLivre(Model model) {
-		List<Livres> Livres = (List<Livres>) livreRep.findAll();
-		//model.addAttribute("livree",book);
-		return Livres;
+	public Set<Livres> allLivre(Model model) {
+		return Livreserv.allLivre();
 	}
+
 
 	@PostMapping("/Livres")
 	public Livres addLivre(@RequestBody Livres livre) {
@@ -47,16 +48,14 @@ public class LivreController {
 	}
 	@GetMapping("/Livres/{id}")
 	public Optional<Livres> getBook(@PathVariable int id,Model model) {
-		Optional<Livres> livre = livreRep.findById(id);
-		
-		return livre;
-	    	
-		
-		//service.notSubscribed();
-
-		
+		return  Livreserv.infoLivre(id);		
 	}
-
+	@DeleteMapping("/Livres/{id}")
+	public void DelBook(@PathVariable int id) {
+	 Livreserv.DelBook(id);
+	}
+	
+	
 
 
 }

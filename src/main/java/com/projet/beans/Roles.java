@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,17 +20,17 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @Table(name = "roles")
 @JsonIdentityInfo(
 		generator = ObjectIdGenerators.PropertyGenerator.class,
-		property = "id")
+		property = "idRole")
 public class Roles {
 	@Id
 	  @GeneratedValue(strategy = GenerationType.IDENTITY)
-	  @Column(name="idRoles", nullable=false)
+	  @Column(name="idRole", nullable=false)
 	int idRole;
 	@Column(name = "nom")
 	String nom;
 	
 
-	@ManyToMany(mappedBy = "role")
+	@ManyToMany(mappedBy = "role",fetch = FetchType.LAZY)
 	private Set<Utilisateurs> user = new HashSet<>();
 
 

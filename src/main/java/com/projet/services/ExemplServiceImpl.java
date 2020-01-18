@@ -3,6 +3,7 @@ package com.projet.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import com.projet.beans.Exemplaires;
@@ -17,4 +18,5 @@ public class ExemplServiceImpl implements ExemplService {
 		Exemplaires ex  = exRep.findById(id).get();
 		return ex;
 	}
+	
 }

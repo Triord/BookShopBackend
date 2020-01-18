@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,7 +24,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @Table(name = "utilisateurs")
 @JsonIdentityInfo(
 		generator = ObjectIdGenerators.PropertyGenerator.class,
-		property = "id")
+		property = "idUtilisateur")
 public class Utilisateurs {
 	@Id
 	  @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,6 +34,9 @@ public class Utilisateurs {
 	@Column(name="nom")
 	String nom;
 	
+	@Column(name="username")
+	String username ;
+	
 	@Column(name="prenom")
 	String prenom;
 	
@@ -40,7 +44,7 @@ public class Utilisateurs {
 	Date dDN;
 	
 	@Column(name="numNat")
-	String numNat;
+	int numNat;
 	
 	@Column(name="email")
 	String email;
@@ -48,14 +52,14 @@ public class Utilisateurs {
 	@Column(name="mdp")
 	String mdp;
 	
-	@ManyToMany(cascade = { CascadeType.MERGE })
+	@ManyToMany(cascade = { CascadeType.MERGE },fetch = FetchType.LAZY)
     @JoinTable(
-	        name = "roleUtilisateur", 
+	        name = "roleUser", 
 	        joinColumns = { @JoinColumn(name = "idUtilisateur") }, 
 	        inverseJoinColumns = { @JoinColumn(name = "idRole") }
 	    )
 	private Set<Roles> role = new HashSet<>();
-
+	
 	public int getIdUtilisateur() {
 		return idUtilisateur;
 	}
@@ -88,12 +92,12 @@ public class Utilisateurs {
 		this.dDN = dDN;
 	}
 
-	public String getNumNat() {
+	public int getNumNat() {
 		return numNat;
 	}
 
-	public void setNumNat(String numNat) {
-		this.numNat = numNat;
+	public void setNumNat(int i) {
+		this.numNat = i;
 	}
 
 	public String getEmail() {
@@ -118,6 +122,14 @@ public class Utilisateurs {
 
 	public void setRole(Set<Roles> role) {
 		this.role = role;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	
 }

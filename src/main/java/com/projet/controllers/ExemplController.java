@@ -1,5 +1,6 @@
 package com.projet.controllers;
 
+import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,6 +37,11 @@ public class ExemplController {
 	public List<Exemplaires> allExemplaire(Model model) {
 		List<Exemplaires> ex = (List<Exemplaires>) exRepo.findAll();
 		//model.addAttribute("livree",book);
+		return ex;
+	}
+	@GetMapping("exEtat")
+	public List<Exemplaires> etatEx(Model model){
+		List<Exemplaires> ex = (List<Exemplaires>) exRepo.findExemplaire();
 		return ex;
 	}
 	@PostMapping("/exemplaire")
