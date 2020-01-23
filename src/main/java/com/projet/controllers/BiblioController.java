@@ -32,21 +32,6 @@ public class BiblioController {
 	public Bibliotheque addBiblio(@RequestBody Bibliotheque biblio) {
 		return bibRep.save(biblio);
 	}
-
-	/*@GetMapping("/biblio")
-	public List<Bibliotheque> allBiblio(Model model) {
-		List<Bibliotheque> biblio = (List<Bibliotheque>) bibRep.findAll();
-		//model.addAttribute("livree",book);
-		return biblio;
-	}*/
-
-
-	/*@GetMapping("/biblio/{id}")
-	public Optional<Bibliotheque> getBiblio(@PathVariable int id,Model model) {
-		Optional<Bibliotheque> biblio = bibRep.findById(id);
-		//service.notSubscribed();
-
-		return biblio;
-	}*/
+	
 
 }

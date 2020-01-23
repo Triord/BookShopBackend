@@ -1,15 +1,11 @@
 package com.projet.services;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Map;
 import java.util.*;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.projet.beans.Exemplaires;
 import com.projet.beans.Roles;
 import com.projet.beans.Utilisateurs;
 import com.projet.repositories.RoleRepository;
@@ -31,24 +27,18 @@ public class UserServiceImpl implements UserService  {
 		Set<Utilisateurs> u = new HashSet<Utilisateurs>((Collection<Utilisateurs>) userRepo.findAll());
 		return u;
 	}
-
+	
+	public Utilisateurs getUser(int id){
+		Utilisateurs user  = userRepo.findById(id).get();
+		return user;
+	}
 
 	public List<Utilisateurs> findAll() {
 		List<Utilisateurs> list = new ArrayList<>();
 		userRepo.findAll().iterator().forEachRemaining(list::add);
 		return list;
 	}
-	public ServiceRequest addUser(String nom ,String username, String prenom ,Date dDN,int numNat,String email,String mdp,List<Integer> idRole ) {
-		Utilisateurs user = new Utilisateurs();
-		user.setNom(nom);
-		user.setUsername(username);
-		user.setPrenom(prenom);
-		user.setdDN(dDN);
-		user.setNumNat(numNat);
-		user.setEmail(email);
-		user.setMdp(mdp);
-		user.setRole(new HashSet<Roles>((Collection<? extends Roles>) roleRepo.findAllById(idRole)));
-
+	public ServiceRequest addUser(Utilisateurs user) {
 		user = userRepo.save(user);
 		if (user != null) {
 			return new ServiceRequest(true, "Saved successfully!");

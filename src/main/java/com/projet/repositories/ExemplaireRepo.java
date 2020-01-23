@@ -11,6 +11,5 @@ import java.util.*;
 
 @Repository
 public interface ExemplaireRepo extends JpaRepository<Exemplaires, Integer> {
-	//@Query(value = "SELECT etat from exemplaires")
-	//List<Exemplaires> findExemplaire();
+	
 }

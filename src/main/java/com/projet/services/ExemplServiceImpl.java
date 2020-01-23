@@ -26,4 +26,5 @@ public class ExemplServiceImpl implements ExemplService {
 		Set<Exemplaires> ex = new HashSet<Exemplaires>((Collection<Exemplaires>) exRep.findAll());
 		return ex;
 	}
-}
+	
+}	

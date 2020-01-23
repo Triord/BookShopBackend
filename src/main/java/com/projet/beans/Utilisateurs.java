@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.*;
@@ -52,13 +53,16 @@ public class Utilisateurs {
 	@Column(name="mdp")
 	String mdp;
 	
-	@ManyToMany(cascade = { CascadeType.MERGE },fetch = FetchType.LAZY)
+	@ManyToMany(cascade = { CascadeType.ALL },fetch = FetchType.EAGER)
     @JoinTable(
 	        name = "roleUser", 
 	        joinColumns = { @JoinColumn(name = "idUtilisateur") }, 
 	        inverseJoinColumns = { @JoinColumn(name = "idRole") }
 	    )
 	private Set<Roles> role = new HashSet<>();
+	
+	@OneToMany(mappedBy = "user",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+	public Set<Locations> loc;
 	
 	public int getIdUtilisateur() {
 		return idUtilisateur;
@@ -131,5 +135,14 @@ public class Utilisateurs {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	
+	@JsonIgnore
+	public Set<Locations> getEx() {
+		return loc;
+	}
+
+	public void setEx(Set<Locations> loc) {
+		this.loc = loc;
+	}
+
+
 }

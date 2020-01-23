@@ -1,6 +1,5 @@
 package com.projet.beans;
 
-import java.util.HashSet;
 import java.beans.Transient;
 import java.util.*;
 
@@ -12,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -52,7 +52,7 @@ public class Exemplaires {
 	private Bibliotheque bibliotheques;
 
 
-
+	
 	
 	public int getId() {
 		return id;
@@ -87,6 +87,7 @@ public class Exemplaires {
 		this.bibliotheques = bibliotheques;
 	}
 
+	
 
 
 

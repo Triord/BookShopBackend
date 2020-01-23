@@ -1,5 +1,6 @@
 package com.projet.beans;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -10,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -51,8 +53,20 @@ public class Livres {
 	@Column(name="edition")
 	String edition;
 
-	@OneToMany(mappedBy = "livres",orphanRemoval = true,fetch = FetchType.LAZY,cascade = CascadeType.DETACH)	
+	@OneToMany(mappedBy = "livres",fetch = FetchType.LAZY,cascade = CascadeType.ALL)	
 	private Set<Exemplaires> ex;
+
+	@ManyToMany(mappedBy = "book")
+	private Set<Locations> location = new HashSet<>();
+	
+	@JsonIgnore
+	public Set<Locations> getLocation() {
+		return location;
+	}
+
+	public void setLocation(Set<Locations> location) {
+		this.location = location;
+	}
 
 	public int getIdlivre() {
 		return idlivre;
@@ -109,11 +123,5 @@ public class Livres {
 	public void setEx(Set<Exemplaires> ex) {
 		this.ex = ex;
 	}
-	
-	
-
-
-
-
 
 }

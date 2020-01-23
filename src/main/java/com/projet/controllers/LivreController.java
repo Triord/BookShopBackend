@@ -30,32 +30,14 @@ public class LivreController {
 	@Autowired
 	private BookServiceImpl Livreserv ;
 
-
 	@GetMapping("/Livres")
 	public Set<Livres> allLivre(Model model) {
 		return Livreserv.allLivre();
 	}
 
-
-	@PostMapping("/Livres")
-	public Livres addLivre(@RequestBody Livres livre) {
-		return livreRep.save(livre);
-	}
-
-	@PutMapping("/Livres/{id}")
-	public Livres upLivre(@RequestBody Livres livre, @PathVariable long id) {
-		return Livreserv.UpdateBooks(id, livre);
-	}
 	@GetMapping("/Livres/{id}")
 	public Optional<Livres> getBook(@PathVariable int id,Model model) {
 		return  Livreserv.infoLivre(id);		
 	}
-	@DeleteMapping("/Livres/{id}")
-	public void DelBook(@PathVariable int id) {
-	 Livreserv.DelBook(id);
-	}
-	
-	
-
 
 }

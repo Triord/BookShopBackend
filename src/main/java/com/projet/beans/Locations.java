@@ -1,7 +1,10 @@
 package com.projet.beans;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,15 +12,22 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 
@@ -26,7 +36,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @Table(name = "locations")
 @JsonIdentityInfo(
 		generator = ObjectIdGenerators.PropertyGenerator.class,
-		property = "id")
+		property = "idLocation")
 public class Locations {
 	@Id
 	  @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,15 +55,24 @@ public class Locations {
 	@Temporal(TemporalType.DATE)
 	Date dateLocation;
 	
-	  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-	    @JoinColumn(name = "idUtilisateur;", nullable = false)
-	    @OnDelete(action = OnDeleteAction.CASCADE)
+	  @ManyToOne(cascade = { CascadeType.ALL },fetch = FetchType.EAGER)
+	  @NotFound(action = NotFoundAction.IGNORE)
+	    @JoinColumn(name = "idUtilisateur")
 	private Utilisateurs user;
 	  
-	  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-	    @JoinColumn(name = "idExemplaire;", nullable = false)
-	    @OnDelete(action = OnDeleteAction.CASCADE)
-	private Exemplaires exemplaire;
+	  @ManyToOne(cascade = { CascadeType.ALL },fetch = FetchType.EAGER)
+	  @NotFound(action = NotFoundAction.IGNORE)
+	    @JoinColumn(name = "idLivre")
+	private Livres livre;
+	  
+
+		@ManyToMany(cascade = { CascadeType.ALL })
+	    @JoinTable(
+		        name = "userLoc", 
+		        joinColumns = { @JoinColumn(name = "idLocation") }, 
+		        inverseJoinColumns = { @JoinColumn(name = "idLivre") }
+		    )
+	    private Set<Livres> book = new HashSet<>();
 
 	public int getIdLocation() {
 		return idLocation;
@@ -86,23 +105,30 @@ public class Locations {
 	public void setDateLocation(Date dateLocation) {
 		this.dateLocation = dateLocation;
 	}
+	
 
 	public Utilisateurs getUser() {
 		return user;
+	}
+	
+	public Set<Livres> getBook() {
+		return book;
+	}
+
+	public void setBook(Set<Livres> book) {
+		this.book = book;
 	}
 
 	public void setUser(Utilisateurs user) {
 		this.user = user;
 	}
 
-	public Exemplaires getExemplaire() {
-		return exemplaire;
+	public Livres getLivre() {
+		return livre;
 	}
 
-	public void setExemplaire(Exemplaires exemplaire) {
-		this.exemplaire = exemplaire;
+	public void setLivre(Livres livre) {
+		this.livre = livre;
 	}
 	
-	  
-
 }

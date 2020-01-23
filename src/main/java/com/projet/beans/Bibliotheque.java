@@ -48,12 +48,6 @@ public class Bibliotheque{
 	@OneToMany(mappedBy = "bibliotheques",fetch = FetchType.LAZY,cascade = CascadeType.DETACH)
 	public Set<Exemplaires> ex;
 
-//	@OneToMany(mappedBy = "bibliotheques",fetch = FetchType.LAZY)
-	//public Set<Livres> livre;
-
-	public void setEx(Set<Exemplaires> ex) {
-		this.ex = ex;
-	}
 
 	public int getIdBiblio() {
 		return idBiblio;
@@ -86,7 +80,7 @@ public class Bibliotheque{
 	public void setLocalisation(String localisation) {
 		this.localisation = localisation;
 	}
-	//@JsonIgnore
+	@JsonIgnore
 	public Set<Exemplaires> getEx() {
 		return ex;
 	}
@@ -95,21 +89,5 @@ public class Bibliotheque{
 		this.ex = ex;
 	}
 
-	
-	
-	
-	
-
-	/*public void setLocalisation(String localisation) {
-		this.localisation = localisation;
-	}
-
-	public Set<exemplaires> getEx() {
-		return ex;
-	}*/
-
-	
-
-	
 
 }
