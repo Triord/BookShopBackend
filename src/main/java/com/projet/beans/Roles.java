@@ -14,6 +14,7 @@ import javax.persistence.Table;
 
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
@@ -29,7 +30,7 @@ public class Roles {
 	@Column(name = "nom")
 	String nom;
 	
-
+	@JsonIgnore
 	@ManyToMany(mappedBy = "role",fetch = FetchType.LAZY)
 	private Set<Utilisateurs> user = new HashSet<>();
 

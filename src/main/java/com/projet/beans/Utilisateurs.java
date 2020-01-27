@@ -53,13 +53,14 @@ public class Utilisateurs {
 	@Column(name="mdp")
 	String mdp;
 	
-	@ManyToMany(cascade = { CascadeType.ALL },fetch = FetchType.EAGER)
+	@ManyToMany(cascade = { CascadeType.MERGE },fetch = FetchType.EAGER)
     @JoinTable(
 	        name = "roleUser", 
 	        joinColumns = { @JoinColumn(name = "idUtilisateur") }, 
 	        inverseJoinColumns = { @JoinColumn(name = "idRole") }
 	    )
 	private Set<Roles> role = new HashSet<>();
+	
 	
 	@OneToMany(mappedBy = "user",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 	public Set<Locations> loc;
@@ -135,12 +136,12 @@ public class Utilisateurs {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	@JsonIgnore
-	public Set<Locations> getEx() {
+	//@JsonIgnore
+	public Set<Locations> getLoc() {
 		return loc;
 	}
 
-	public void setEx(Set<Locations> loc) {
+	public void setLoc(Set<Locations> loc) {
 		this.loc = loc;
 	}
 

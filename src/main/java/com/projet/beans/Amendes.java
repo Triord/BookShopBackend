@@ -43,7 +43,7 @@ public class Amendes {
 	float montant;
 
 	    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-	    @JoinColumn(name = "idUtilisateur;", nullable = false)
+	    @JoinColumn(name = "idUtilisateur", nullable = false)
 	    @OnDelete(action = OnDeleteAction.CASCADE)
 	private Utilisateurs user;
 

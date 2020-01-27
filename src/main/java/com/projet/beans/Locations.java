@@ -122,7 +122,7 @@ public class Locations {
 	public void setUser(Utilisateurs user) {
 		this.user = user;
 	}
-
+@JsonIgnore
 	public Livres getLivre() {
 		return livre;
 	}

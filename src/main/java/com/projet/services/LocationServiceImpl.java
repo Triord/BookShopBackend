@@ -33,4 +33,8 @@ public class LocationServiceImpl implements LocationService {
 		Set<Locations> l = new HashSet<Locations>((Collection<Locations>) lkRep.findAll());
 		return l;
 	}
+	public Locations getLoc(int id){
+		Locations loc  = lkRep.findById(id).get();
+		return loc;
+	}
 	}

@@ -10,7 +10,7 @@ class PassWord {
 
 	@Test
 	void test() {
-		Password p = new Password("test");
+		Password p = new Password("tt");
 		p.firstHash();
 		System.out.print(p.getHash());
 		fail("Not yet implemented");
