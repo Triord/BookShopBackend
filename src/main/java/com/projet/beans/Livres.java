@@ -56,9 +56,15 @@ public class Livres {
 	@OneToMany(mappedBy = "livres",fetch = FetchType.LAZY,cascade = CascadeType.ALL)	
 	private Set<Exemplaires> ex;
 
+	@OneToMany(mappedBy = "livre",fetch = FetchType.LAZY,cascade = CascadeType.MERGE)	
+	private Set<Locations> loc;
+
+	@OneToMany(mappedBy = "livre",fetch = FetchType.LAZY,cascade = CascadeType.MERGE)	
+	private Set<Critiques> crit;
+
 	@ManyToMany(mappedBy = "book")
 	private Set<Locations> location = new HashSet<>();
-	
+
 	@JsonIgnore
 	public Set<Locations> getLocation() {
 		return location;
@@ -122,6 +128,22 @@ public class Livres {
 
 	public void setEx(Set<Exemplaires> ex) {
 		this.ex = ex;
+	}
+	@JsonIgnore
+	public Set<Locations> getLoc() {
+		return loc;
+	}
+
+	public void setLoc(Set<Locations> loc) {
+		this.loc = loc;
+	}
+	
+	public Set<Critiques> getCrit() {
+		return crit;
+	}
+
+	public void setCrit(Set<Critiques> crit) {
+		this.crit = crit;
 	}
 
 }

@@ -26,7 +26,7 @@ import com.projet.services.BookServiceImpl;
 public class LivreController {
 
 	@Autowired
-	private BookRepository livreRep;
+	private BookRepository bkRep;
 	@Autowired
 	private BookServiceImpl Livreserv ;
 
@@ -39,5 +39,6 @@ public class LivreController {
 	public Optional<Livres> getBook(@PathVariable int id,Model model) {
 		return  Livreserv.infoLivre(id);		
 	}
-
+	
+	
 }

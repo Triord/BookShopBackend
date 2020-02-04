@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.projet.beans.Amendes;
 import com.projet.beans.Bibliotheque;
+import com.projet.beans.Critiques;
 import com.projet.beans.Exemplaires;
 import com.projet.beans.Livres;
 import com.projet.beans.Locations;
@@ -32,11 +33,13 @@ import com.projet.beans.Roles;
 import com.projet.beans.Utilisateurs;
 import com.projet.exception.LocationException;
 import com.projet.repositories.AmendeRepo;
+import com.projet.repositories.CritiqueRepository;
 import com.projet.repositories.LocRepository;
 import com.projet.repositories.RoleRepository;
 import com.projet.repositories.UserRepository;
 import com.projet.services.LocationService;
 import com.projet.services.LocationServiceImpl;
+import com.projet.services.Password;
 import com.projet.services.ServiceRequest;
 import com.projet.services.UserServiceImpl;
 
@@ -55,17 +58,13 @@ public class UserController {
 	private LocationServiceImpl locS;
 	@Autowired
 	private LocRepository locRep;
+	@Autowired
+	private CritiqueRepository critRep;
 
 	@PostMapping("/user")
 	public ServiceRequest addUser(@RequestBody Utilisateurs user) {
-
-		return userServ.addUser(user);
-		/*Roles role = new Roles();
-		role.setIdRole(1);
-		role.setNom("lecteur");
-		user.getRole().add(role);
-
-		return userRepo.save(user);*/
+		
+		return userServ.addLecteur(user);
 	}
 
 	@GetMapping("/user/{id}")
@@ -79,7 +78,7 @@ public class UserController {
 		userRepo.deleteById(id);
 
 	}
-	@PostMapping("/louer")
+	@RequestMapping(value = "/louer", method = RequestMethod.POST)
 	public Locations Louer(@RequestBody Locations loc){
 
 
@@ -90,22 +89,24 @@ public class UserController {
 		loc.setDateLocation(dateLoc);
 		loc.setdDebutLocation(dateDebutLoc);
 		loc.setdFinLocation(dateFinLoc);
-
+		
+		
+		
 		return locRep.save(loc);
 	}
 	@GetMapping("/check/{id}")
 	public Locations checkLoc(@PathVariable int id,Model model) {
 		Locations loc = locS.getLoc(id);
 		Date d = new Date();
-		
+
 		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 		String s = dateFormat.format(d);
-		String s2 = dateFormat.format(loc.getdDebutLocation());
+		String s2 = dateFormat.format(loc.getdFinLocation());
 		int i = Integer.parseInt(s);
 		int i2 = Integer.parseInt(s2);
-		
+
 		int result = i-i2;
-		
+
 		int montant = (int) (result*0.50);
 
 		if (loc.getdDebutLocation().before(d) ) {
@@ -115,39 +116,39 @@ public class UserController {
 			amende.setMontant(montant);
 			amende.setUser(loc.getUser());
 			aRep.save(amende);
-			
+
 		}
 		return loc;
 	}
 	@GetMapping("/check")
 	public Set <Locations> checkAllLoc(Model model) {
 		Set <Locations> loc =  locS.allLoc();
-	
-for (Locations lo : loc) {
-		Date d = new Date();
-		
-		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-		String s = dateFormat.format(d);
-		String s2 = dateFormat.format(lo.getdDebutLocation());
-		int i = Integer.parseInt(s);
-		int i2 = Integer.parseInt(s2);
-		
-		int result = i-i2;
-		
-		int montant = (int) (result*0.50);
-	
-	
-		if (lo.getdDebutLocation().before(d) ) {
-			Amendes amende = new Amendes();
-			amende.setDateAmende(d);
-			amende.setDelaiDepassement(result);
-			amende.setMontant(montant);
-			amende.setUser(lo.getUser());
-			aRep.save(amende);
-			
+
+		for (Locations lo : loc) {
+			Date d = new Date();
+
+			DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+			String s = dateFormat.format(d);
+			String s2 = dateFormat.format(lo.getdFinLocation());
+			int i = Integer.parseInt(s);
+			int i2 = Integer.parseInt(s2);
+
+			int result = i-i2;
+
+			int montant = (int) (result*0.50);
+
+
+			if (lo.getdDebutLocation().before(d) ) {
+				Amendes amende = new Amendes();
+				amende.setDateAmende(d);
+				amende.setDelaiDepassement(result);
+				amende.setMontant(montant);
+				amende.setUser(lo.getUser());
+				aRep.save(amende);
+
+			}
 		}
-}
-	
+
 		return loc;
 	}
 
@@ -160,5 +161,15 @@ for (Locations lo : loc) {
 	public Set<Locations> allLoc(Model model){
 		return locS.allLoc();
 	}
-
+	@RequestMapping(value = "/crit", method = RequestMethod.POST)
+	public void addCrit(@RequestBody Critiques crit) {
+		userServ.addCrit(crit);
+	}
+	
+	
+	@RequestMapping(value = "/crit", method = RequestMethod.GET)
+	public List<Critiques> allCrit(Model model) {
+		List<Critiques> crit = (List<Critiques>) critRep.findAll();
+		return crit;
+	}
 }

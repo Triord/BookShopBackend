@@ -1,5 +1,6 @@
 package com.projet.beans;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -20,22 +21,21 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @Table(name = "critiques")
 @JsonIdentityInfo(
 		generator = ObjectIdGenerators.PropertyGenerator.class,
-		property = "id")
+		property = "idCritique")
 public class Critiques {
 	@Id
-	  @GeneratedValue(strategy = GenerationType.IDENTITY)
-	  @Column(name="idCritique", nullable=false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="idCritique", nullable=false)
 	int idCritique;
-	
-	  @Column(name="commentaires")
+
+	@Column(name="commentaires")
 	String commentaires;
-	  
-	  @Column(name="notes")
+
+	@Column(name="notes")
 	int notes;
-	  
-	  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-	    @JoinColumn(name = "idLivre;", nullable = false)
-	    @OnDelete(action = OnDeleteAction.CASCADE)
+
+	@ManyToOne(cascade = { CascadeType.MERGE })
+	@JoinColumn(name = "idlivre", nullable = false)
 	private Livres livre;
 
 	public int getIdCritique() {
@@ -69,5 +69,5 @@ public class Critiques {
 	public void setLivre(Livres livre) {
 		this.livre = livre;
 	}
-	
+
 }

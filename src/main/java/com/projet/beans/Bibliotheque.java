@@ -16,6 +16,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -47,7 +50,11 @@ public class Bibliotheque{
 
 	@OneToMany(mappedBy = "bibliotheques",fetch = FetchType.LAZY,cascade = CascadeType.DETACH)
 	public Set<Exemplaires> ex;
-
+	
+	@ManyToOne(cascade = { CascadeType.MERGE },fetch = FetchType.EAGER)
+	@NotFound(action = NotFoundAction.IGNORE)
+	@JoinColumn(name = "idManaG")
+	private ManaGeneral manaG;
 
 	public int getIdBiblio() {
 		return idBiblio;
@@ -89,5 +96,13 @@ public class Bibliotheque{
 		this.ex = ex;
 	}
 
+	public ManaGeneral getManaG() {
+		return manaG;
+	}
 
+	public void setManaG(ManaGeneral manaG) {
+		this.manaG = manaG;
+	}
+
+	
 }

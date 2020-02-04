@@ -19,6 +19,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.projet.services.Password;
 
 
 @Entity
@@ -45,7 +46,7 @@ public class Utilisateurs {
 	Date dDN;
 	
 	@Column(name="numNat")
-	int numNat;
+	long numNat;
 	
 	@Column(name="email")
 	String email;
@@ -62,7 +63,7 @@ public class Utilisateurs {
 	private Set<Roles> role = new HashSet<>();
 	
 	
-	@OneToMany(mappedBy = "user",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user",fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
 	public Set<Locations> loc;
 	
 	public int getIdUtilisateur() {
@@ -97,11 +98,11 @@ public class Utilisateurs {
 		this.dDN = dDN;
 	}
 
-	public int getNumNat() {
+	public long getNumNat() {
 		return numNat;
 	}
 
-	public void setNumNat(int i) {
+	public void setNumNat(long i) {
 		this.numNat = i;
 	}
 
@@ -118,7 +119,9 @@ public class Utilisateurs {
 	}
 
 	public void setMdp(String mdp) {
-		this.mdp = mdp;
+		Password p = new Password(mdp);
+		p.firstHash();
+		this.mdp = p.getHash();
 	}
 
 	public Set<Roles> getRole() {

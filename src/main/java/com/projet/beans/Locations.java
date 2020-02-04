@@ -19,6 +19,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.annotations.OnDelete;
@@ -39,40 +40,38 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 		property = "idLocation")
 public class Locations {
 	@Id
-	  @GeneratedValue(strategy = GenerationType.IDENTITY)
-	  @Column(name="idLocation", nullable=false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="idLocation", nullable=false)
 	int idLocation;
-	
+
 	@Column(name="dDebutLocation")
 	@Temporal(TemporalType.DATE)
 	Date dDebutLocation;
-	
+
 	@Column(name="dFinLocation")
 	@Temporal(TemporalType.DATE)
 	Date dFinLocation;
-	
+
 	@Column(name="dateLocation")
 	@Temporal(TemporalType.DATE)
 	Date dateLocation;
-	
-	  @ManyToOne(cascade = { CascadeType.ALL },fetch = FetchType.EAGER)
-	  @NotFound(action = NotFoundAction.IGNORE)
-	    @JoinColumn(name = "idUtilisateur")
-	private Utilisateurs user;
-	  
-	  @ManyToOne(cascade = { CascadeType.ALL },fetch = FetchType.EAGER)
-	  @NotFound(action = NotFoundAction.IGNORE)
-	    @JoinColumn(name = "idLivre")
-	private Livres livre;
-	  
 
-		@ManyToMany(cascade = { CascadeType.ALL })
-	    @JoinTable(
-		        name = "userLoc", 
-		        joinColumns = { @JoinColumn(name = "idLocation") }, 
-		        inverseJoinColumns = { @JoinColumn(name = "idLivre") }
-		    )
-	    private Set<Livres> book = new HashSet<>();
+	@ManyToOne(cascade = { CascadeType.MERGE })
+	@JoinColumn(name = "idUtilisateur",nullable = false)
+	private Utilisateurs user;
+
+	@ManyToOne(cascade = { CascadeType.MERGE })
+	@JoinColumn(name = "idLivre",nullable = false)
+	private Livres livre;
+
+
+	@ManyToMany(cascade = { CascadeType.MERGE })
+	@JoinTable(
+			name = "userLoc", 
+			joinColumns = { @JoinColumn(name = "idLocation") }, 
+			inverseJoinColumns = { @JoinColumn(name = "idLivre") }
+			)
+	private Set<Livres> book = new HashSet<>();
 
 	public int getIdLocation() {
 		return idLocation;
@@ -105,24 +104,24 @@ public class Locations {
 	public void setDateLocation(Date dateLocation) {
 		this.dateLocation = dateLocation;
 	}
-	
+
 
 	public Utilisateurs getUser() {
 		return user;
 	}
-	
+
 	public Set<Livres> getBook() {
 		return book;
 	}
-
+	@JsonIgnore
 	public void setBook(Set<Livres> book) {
 		this.book = book;
 	}
-
+	
 	public void setUser(Utilisateurs user) {
 		this.user = user;
 	}
-@JsonIgnore
+	
 	public Livres getLivre() {
 		return livre;
 	}
@@ -130,5 +129,5 @@ public class Locations {
 	public void setLivre(Livres livre) {
 		this.livre = livre;
 	}
-	
+
 }

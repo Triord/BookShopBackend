@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.projet.beans.Exemplaires;
 import com.projet.beans.Livres;
+import com.projet.beans.Utilisateurs;
 import com.projet.repositories.BookRepository;
 
 
@@ -30,6 +31,13 @@ public class BookServiceImpl implements BookService{
 		Optional<Livres> livre = livreRep.findById(id);
 		
 		return livre;
+	}
+	public ServiceRequest addBook(Livres book) {
+		book = livreRep.save(book);
+		if (book != null) {
+			return new ServiceRequest(true, "Saved successfully!");
+		}
+		return new ServiceRequest(false, "Dont saved!");
 	}
 
 	public Livres UpdateBooks(long id, Livres livre) {

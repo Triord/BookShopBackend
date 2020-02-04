@@ -28,10 +28,7 @@ public class BiblioController {
 	@Autowired
 	private biblioRepo bibRep;
 
-	@PostMapping("/biblio")
-	public Bibliotheque addBiblio(@RequestBody Bibliotheque biblio) {
-		return bibRep.save(biblio);
-	}
+
 	
 
 }

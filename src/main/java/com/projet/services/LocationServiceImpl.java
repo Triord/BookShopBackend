@@ -37,4 +37,8 @@ public class LocationServiceImpl implements LocationService {
 		Locations loc  = lkRep.findById(id).get();
 		return loc;
 	}
+	public Locations addLoc(Locations loc) {
+		return lkRep.save(loc);
+		
+	}
 	}
