@@ -1,5 +1,8 @@
 package com.projet.controllers;
 
+import java.util.Date;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,8 +18,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.projet.beans.Bibliotheque;
 import com.projet.beans.Livres;
+import com.projet.beans.Locations;
+import com.projet.beans.Question;
+import com.projet.beans.Redevances;
+import com.projet.beans.Reponse;
 import com.projet.beans.Utilisateurs;
 import com.projet.repositories.BookRepository;
+import com.projet.repositories.RedevanceRepo;
+import com.projet.repositories.ReponseRepo;
 import com.projet.repositories.UserRepository;
 import com.projet.repositories.biblioRepo;
 import com.projet.services.BookServiceImpl;
@@ -37,8 +46,8 @@ public class ManagementController {
 		return bkS.addBook(livre);
 	}
 	
-	@PutMapping("/Livres/{id}")
-	public Livres upLivre(@RequestBody Livres livre, @PathVariable long id) {
+	@RequestMapping(value = "/Livres/{id}", method = RequestMethod.PUT)
+	public Livres upLivre(@RequestBody Livres livre, @PathVariable int id) {
 		return bkS.UpdateBooks(id, livre);
 	}
 	@PostMapping("/addbook")
@@ -65,6 +74,7 @@ public class ManagementController {
 	@Autowired
 	private UserServiceImpl urS;
 	
+	
 	@PutMapping("/user/{id}")
 	public Utilisateurs promUser(@RequestBody Utilisateurs user, @PathVariable int id) {
 		return urS.promUser(id, user);
@@ -83,7 +93,20 @@ public class ManagementController {
 		return urS.addUser(user);
 		
 	}
-
+	
+	@RequestMapping(value = "/reply", method = RequestMethod.POST)
+	public void reply(@RequestBody Reponse reponse) {
+		urS.reply(reponse);
+	}
+	
+	@RequestMapping(value = "/question", method = RequestMethod.GET)
+	public Set<Question> allQ(Model model){
+		return urS.allQ();
+	}
+	@RequestMapping(value = "/payer", method = RequestMethod.POST)
+	public void payerR(@RequestBody Redevances r) {
+		urS.payeR(r);
+	}
 	
 	
 }

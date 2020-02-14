@@ -105,7 +105,7 @@ public class Locations {
 		this.dateLocation = dateLocation;
 	}
 
-
+	
 	public Utilisateurs getUser() {
 		return user;
 	}

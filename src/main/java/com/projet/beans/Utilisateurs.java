@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.*;
@@ -65,6 +66,16 @@ public class Utilisateurs {
 	
 	@OneToMany(mappedBy = "user",fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
 	public Set<Locations> loc;
+	
+	@OneToMany(mappedBy = "user",fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+	public Set<Question> question;
+	
+	@OneToMany(mappedBy = "user",fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+	public Set<Reponse> reponse;
+	
+	@OneToMany(mappedBy = "user",fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+	public Set<Redevances> redevance;
+	
 	
 	public int getIdUtilisateur() {
 		return idUtilisateur;
@@ -139,7 +150,7 @@ public class Utilisateurs {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	//@JsonIgnore
+	@JsonIgnore
 	public Set<Locations> getLoc() {
 		return loc;
 	}
@@ -147,6 +158,32 @@ public class Utilisateurs {
 	public void setLoc(Set<Locations> loc) {
 		this.loc = loc;
 	}
+	@JsonIgnore
+	public Set<Question> getQuestion() {
+		return question;
+	}
+
+	public void setQuestion(Set<Question> question) {
+		this.question = question;
+	}
+	@JsonIgnore
+	public Set<Reponse> getReponse() {
+		return reponse;
+	}
+
+	public void setReponse(Set<Reponse> reponse) {
+		this.reponse = reponse;
+	}
+
+	public Set<Redevances> getRedevance() {
+		return redevance;
+	}
+
+	public void setRedevance(Set<Redevances> redevance) {
+		this.redevance = redevance;
+	}
+
+	
 
 
 }

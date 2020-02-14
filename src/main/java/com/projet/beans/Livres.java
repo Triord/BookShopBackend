@@ -23,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.projet.exceptions.ProduitIntrouvableException;
 
 
 
@@ -52,6 +53,9 @@ public class Livres {
 
 	@Column(name="edition")
 	String edition;
+	
+	@Column(name="etat")
+	Boolean etat;
 
 	@OneToMany(mappedBy = "livres",fetch = FetchType.LAZY,cascade = CascadeType.ALL)	
 	private Set<Exemplaires> ex;
@@ -146,4 +150,17 @@ public class Livres {
 		this.crit = crit;
 	}
 
+	public Boolean getEtat() {
+		return etat;
+	}
+
+	public void setEtat(Boolean etat) {
+		this.etat = etat;
+	}
+	
+	
+
+
+	
+	
 }

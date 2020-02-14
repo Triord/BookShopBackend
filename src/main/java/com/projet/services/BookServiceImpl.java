@@ -40,7 +40,18 @@ public class BookServiceImpl implements BookService{
 		return new ServiceRequest(false, "Dont saved!");
 	}
 
-	public Livres UpdateBooks(long id, Livres livre) {
+	public Livres UpdateBooks(int id,Livres livre) {
+		
+		 Optional<Livres> livres = livreRep.findById(id);
+		livre.setIdlivre(livre.getIdlivre());
+		livre.setNom(livre.getNom());
+		livre.setIsbn(livre.getIsbn());
+		livre.setDescriptif(livre.getDescriptif());
+		livre.setEdition(livre.getEdition());
+		livre.setPrix(livre.getPrix());
+		livre.setEtat(livre.getEtat());
+		livre.setEx(livre.getEx());
+		livre.setLoc(livre.getLoc());
 		livre = livreRep.save(livre);
 		return livre;
 	}

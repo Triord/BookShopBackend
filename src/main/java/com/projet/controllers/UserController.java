@@ -1,9 +1,11 @@
 package com.projet.controllers;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -12,6 +14,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,21 +25,27 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
+import java.time.*;
 import com.projet.beans.Amendes;
 import com.projet.beans.Bibliotheque;
 import com.projet.beans.Critiques;
 import com.projet.beans.Exemplaires;
 import com.projet.beans.Livres;
 import com.projet.beans.Locations;
+import com.projet.beans.Question;
+import com.projet.beans.Redevances;
 import com.projet.beans.Roles;
 import com.projet.beans.Utilisateurs;
 import com.projet.exception.LocationException;
+import com.projet.exceptions.ProduitIntrouvableException;
 import com.projet.repositories.AmendeRepo;
+import com.projet.repositories.BookRepository;
 import com.projet.repositories.CritiqueRepository;
 import com.projet.repositories.LocRepository;
+import com.projet.repositories.RedevanceRepo;
 import com.projet.repositories.RoleRepository;
 import com.projet.repositories.UserRepository;
+import com.projet.services.BookServiceImpl;
 import com.projet.services.LocationService;
 import com.projet.services.LocationServiceImpl;
 import com.projet.services.Password;
@@ -48,6 +57,10 @@ public class UserController {
 
 	@Autowired
 	private UserServiceImpl userServ;
+	@Autowired
+	private BookServiceImpl bkS;
+	@Autowired
+	private BookRepository bkR;
 	@Autowired 
 	private AmendeRepo aRep;
 	@Autowired
@@ -63,7 +76,7 @@ public class UserController {
 
 	@PostMapping("/user")
 	public ServiceRequest addUser(@RequestBody Utilisateurs user) {
-		
+
 		return userServ.addLecteur(user);
 	}
 
@@ -78,34 +91,29 @@ public class UserController {
 		userRepo.deleteById(id);
 
 	}
+	@Autowired
+	private RedevanceRepo red;
+
 	@RequestMapping(value = "/louer", method = RequestMethod.POST)
 	public Locations Louer(@RequestBody Locations loc){
+		locS.louer(loc);
 
+		return loc;
 
-		LocalDateTime t = LocalDateTime.now();
-		Date dateLoc = Date.from( t.atZone( ZoneId.systemDefault()).toInstant());
-		Date dateDebutLoc = Date.from( t.atZone( ZoneId.systemDefault()).toInstant().plusSeconds(86400));
-		Date dateFinLoc = Date.from( t.atZone( ZoneId.systemDefault()).toInstant().plusSeconds(2592000));
-		loc.setDateLocation(dateLoc);
-		loc.setdDebutLocation(dateDebutLoc);
-		loc.setdFinLocation(dateFinLoc);
-		
-		
-		
-		return locRep.save(loc);
 	}
-	@GetMapping("/check/{id}")
-	public Locations checkLoc(@PathVariable int id,Model model) {
+	/*@GetMapping("/check/{id}")
+	public Locations checkLoc(@PathVariable int id,Model model) throws ParseException {
 		Locations loc = locS.getLoc(id);
 		Date d = new Date();
 
-		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-		String s = dateFormat.format(d);
-		String s2 = dateFormat.format(loc.getdFinLocation());
-		int i = Integer.parseInt(s);
-		int i2 = Integer.parseInt(s2);
 
-		int result = i-i2;
+
+
+		DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy"); // format jour / mois / année
+		LocalDate date1 = LocalDate.parse((CharSequence) d, format);
+		LocalDate date2 = LocalDate.parse((CharSequence) loc.getdFinLocation(), format);
+		Period period = Period.between(date2, date1);
+
 
 		int montant = (int) (result*0.50);
 
@@ -119,37 +127,12 @@ public class UserController {
 
 		}
 		return loc;
-	}
+	}*/
 	@GetMapping("/check")
-	public Set <Locations> checkAllLoc(Model model) {
-		Set <Locations> loc =  locS.allLoc();
-
-		for (Locations lo : loc) {
-			Date d = new Date();
-
-			DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-			String s = dateFormat.format(d);
-			String s2 = dateFormat.format(lo.getdFinLocation());
-			int i = Integer.parseInt(s);
-			int i2 = Integer.parseInt(s2);
-
-			int result = i-i2;
-
-			int montant = (int) (result*0.50);
-
-
-			if (lo.getdDebutLocation().before(d) ) {
-				Amendes amende = new Amendes();
-				amende.setDateAmende(d);
-				amende.setDelaiDepassement(result);
-				amende.setMontant(montant);
-				amende.setUser(lo.getUser());
-				aRep.save(amende);
-
-			}
-		}
-
-		return loc;
+	public void checkAllLoc() {
+	locS.check();
+	
+		
 	}
 
 
@@ -165,11 +148,15 @@ public class UserController {
 	public void addCrit(@RequestBody Critiques crit) {
 		userServ.addCrit(crit);
 	}
-	
-	
+
+
 	@RequestMapping(value = "/crit", method = RequestMethod.GET)
 	public List<Critiques> allCrit(Model model) {
 		List<Critiques> crit = (List<Critiques>) critRep.findAll();
 		return crit;
+	}
+	@RequestMapping(value = "/help", method = RequestMethod.POST)
+	public void help(@RequestBody Question question) {
+		userServ.help(question);
 	}
 }

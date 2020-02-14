@@ -1,0 +1,8 @@
+com.projet
+com.projet.beans
+com.projet.controllers
+com.projet.exception
+com.projet.jwt
+com.projet.jwt.resources
+com.projet.repositories
+com.projet.services

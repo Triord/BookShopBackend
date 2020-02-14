@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @Table(name = "redevances")
 @JsonIdentityInfo(
 		generator = ObjectIdGenerators.PropertyGenerator.class,
-		property = "id")
+		property = "idRedevance")
 public class Redevances {
 	@Id
 	  @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,7 +44,7 @@ public class Redevances {
 	float montant;
 	
 	  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-	    @JoinColumn(name = "idUtilisateur;", nullable = false)
+	    @JoinColumn(name = "idUtilisateur", nullable = false)
 	    @OnDelete(action = OnDeleteAction.CASCADE)
 	private Utilisateurs user;
 
@@ -77,7 +77,7 @@ public class Redevances {
 	}
 
 	public void setMontant(float montant) {
-		this.montant = montant;
+		this.montant = (float) 25.50;
 	}
 
 	public Utilisateurs getUser() {
