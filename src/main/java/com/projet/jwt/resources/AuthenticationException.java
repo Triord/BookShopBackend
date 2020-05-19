@@ -2,6 +2,7 @@ package com.projet.jwt.resources;
 public class AuthenticationException extends RuntimeException {
 
 
+
 	/**
 	 * 
 	 */
@@ -11,4 +12,3 @@ public class AuthenticationException extends RuntimeException {
         super(message, cause);
     }
 }
-

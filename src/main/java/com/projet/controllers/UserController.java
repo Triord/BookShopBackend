@@ -77,7 +77,7 @@ public class UserController {
 	@PostMapping("/user")
 	public ServiceRequest addUser(@RequestBody Utilisateurs user) {
 
-		return userServ.addLecteur(user);
+		return userServ.addUser(user);
 	}
 
 	@GetMapping("/user/{id}")
@@ -137,8 +137,10 @@ public class UserController {
 
 
 	@GetMapping("/user")
-	public Set<Utilisateurs> allUser(Model model) {
-		return userServ.allUser();
+	public List<Utilisateurs> allUser() {
+		Utilisateurs user;
+
+		return (List<Utilisateurs>) userRepo.findAll();
 	}
 	@RequestMapping(value = "/location", method = RequestMethod.GET)
 	public Set<Locations> allLoc(Model model){
@@ -158,5 +160,12 @@ public class UserController {
 	@RequestMapping(value = "/help", method = RequestMethod.POST)
 	public void help(@RequestBody Question question) {
 		userServ.help(question);
+	}
+	
+	
+	@RequestMapping(value = "/role", method = RequestMethod.GET)
+	public List<Roles> allRoles(Model model) {
+		List<Roles> role = (List<Roles>) roleRepo.findAll();
+		return role;
 	}
 }

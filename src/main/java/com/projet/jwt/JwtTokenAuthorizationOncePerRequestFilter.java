@@ -2,6 +2,7 @@ package com.projet.jwt;
 
 import java.io.IOException;
 
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -71,5 +72,4 @@ public class JwtTokenAuthorizationOncePerRequestFilter extends OncePerRequestFil
         chain.doFilter(request, response);
     }
 }
-
 

@@ -53,14 +53,14 @@ public class UserServiceImpl implements UserService  {
 	public ServiceRequest addUser(Utilisateurs user) {
 		//if (user.getRole() !=null) {
 
-		//	Roles role = new Roles();
+			Roles role = new Roles();
 
-		//role.setIdRole(1) ;
-		//role.setNom("lecteur");
-		//user.getRole().add(role);
-		if (user.getEmail().contains(user.getEmail())) {
-			throw new ProduitIntrouvableException("email existant");
-		}
+		role.setIdRole(1) ;
+		role.setNom("lecteur");
+		user.getRole().add(role);
+		//if (user.getEmail().contains(user.getEmail())) {
+		//	throw new ProduitIntrouvableException("email existant");
+		//}
 		user = userRepo.save(user);
 
 		//}
@@ -71,18 +71,28 @@ public class UserServiceImpl implements UserService  {
 		}
 		return new ServiceRequest(false, "Dont saved!");
 	}
-	public ServiceRequest addLecteur(Utilisateurs user) {
-		if (user.getRole() !=null) {
-
-			Roles role = new Roles();
-
-			role.setIdRole(1) ;
-			role.setNom("lecteur");
+	public ServiceRequest addBiblio(Utilisateurs user) {
+					
+			 Roles role = roleRepo.findById(2).get();
+			
 			user.getRole().add(role);
 			user = userRepo.save(user);
 
+			if (user != null) {
+			return new ServiceRequest(true, "Saved successfully!");
 		}
+		return new ServiceRequest(false, "Dont saved!");
+	}
+	public ServiceRequest addMana(Utilisateurs user) {
+		
 
+		Roles role = roleRepo.findById(3).get();
+
+			
+			user.getRole().add(role);
+			user = userRepo.save(user);
+
+	
 
 		if (user != null) {
 			return new ServiceRequest(true, "Saved successfully!");
@@ -93,12 +103,32 @@ public class UserServiceImpl implements UserService  {
 
 	public Utilisateurs promUser(int id, Utilisateurs user) {
 		Roles role = new Roles();
-
+		if (role.getIdRole() == 1) {
+			
+		
 		role.setIdRole(2) ;
 		role.setNom("bibliothequaire");
 		roleRepo.save(role);
 		user.getRole().add(role);
 		user = userRepo.save(user);
+		return user;
+		}
+		else if(role.getIdRole() == 2) {
+			role.setIdRole(3) ;
+			role.setNom("manaBiblio");
+			roleRepo.save(role);
+			user.getRole().add(role);
+			user = userRepo.save(user);
+		
+		}
+		else if(role.getIdRole() == 3) {
+			role.setIdRole(4) ;
+			role.setNom("manaGeneral");
+			roleRepo.save(role);
+			user.getRole().add(role);
+			user = userRepo.save(user);
+			
+		}
 		return user;
 	}
 

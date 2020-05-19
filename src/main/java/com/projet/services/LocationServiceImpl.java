@@ -54,7 +54,7 @@ public class LocationServiceImpl implements LocationService {
 		loc.setDateLocation(dateLoc);
 		loc.setdDebutLocation(dateDebutLoc);
 		loc.setdFinLocation(dateFinLoc);
-		System.out.println(loc.getLivre().getIdlivre());
+		
 		
 		Livres book = bkRep.findById(loc.getLivre().getIdlivre()).get();
 		

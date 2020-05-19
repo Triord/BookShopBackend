@@ -1,11 +1,15 @@
 package com.projet.controllers;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,10 +26,12 @@ import com.projet.beans.Locations;
 import com.projet.beans.Question;
 import com.projet.beans.Redevances;
 import com.projet.beans.Reponse;
+import com.projet.beans.Roles;
 import com.projet.beans.Utilisateurs;
 import com.projet.repositories.BookRepository;
 import com.projet.repositories.RedevanceRepo;
 import com.projet.repositories.ReponseRepo;
+import com.projet.repositories.RoleRepository;
 import com.projet.repositories.UserRepository;
 import com.projet.repositories.biblioRepo;
 import com.projet.services.BookServiceImpl;
@@ -67,6 +73,8 @@ public class ManagementController {
 	public Bibliotheque addBiblio(@RequestBody Bibliotheque biblio) {
 		return bqRep.save(biblio);
 	}
+	@Autowired
+	private RoleRepository rRep;
 	
 	// ADD PUT AND DELETE MAPPING 
 	@Autowired
@@ -74,23 +82,37 @@ public class ManagementController {
 	@Autowired
 	private UserServiceImpl urS;
 	
-	
+	@CrossOrigin(origins = "http://localhost:4200")
 	@PutMapping("/user/{id}")
 	public Utilisateurs promUser(@RequestBody Utilisateurs user, @PathVariable int id) {
 		return urS.promUser(id, user);
 	}
 	@PutMapping("/bibliothequaire/{id}")
 	public Utilisateurs promBiblio(@RequestBody Utilisateurs user, @PathVariable int id) {
+		
 		return urS.promBiblio(id, user);
 	}
 	@PutMapping("/lecteur/{id}")
 	public Utilisateurs retroUser(@RequestBody Utilisateurs user, @PathVariable int id) {
+		
 		return urS.retroUser(id, user);
 	}
-	@PostMapping("/perso")
+	@PostMapping("/lecteur")
 	public ServiceRequest addUser(@RequestBody Utilisateurs user) {
-		
+	
 		return urS.addUser(user);
+		
+	}
+	@PostMapping("/bibliothequaire")
+	public ServiceRequest addBiblio(@RequestBody Utilisateurs user) {
+	
+		return urS.addBiblio(user);
+		
+	}
+	@PostMapping("/manaBiblio")
+	public ServiceRequest addMana(@RequestBody Utilisateurs user) {
+	
+		return urS.addMana(user);
 		
 	}
 	

@@ -3,6 +3,7 @@ package com.projet.jwt;
 import java.io.IOException;
 import java.io.Serializable;
 
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -23,5 +24,3 @@ public class JwtUnAuthorizedResponseAuthenticationEntryPoint implements Authenti
         "You would need to provide the Jwt Token to Access This resource");
   }
 }
-
-

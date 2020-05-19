@@ -1,8 +1,5 @@
 package com.projet.jwt;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.*;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -81,7 +78,5 @@ public class JwtUserDetails implements UserDetails {
   public boolean isEnabled() {
     return true;
   }
-
 }
-
 
