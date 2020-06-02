@@ -56,6 +56,9 @@ public class Livres {
 	
 	@Column(name="etat")
 	Boolean etat;
+	
+	@Column(name="images")
+	String images;
 
 	@OneToMany(mappedBy = "livres",fetch = FetchType.LAZY,cascade = CascadeType.ALL)	
 	private Set<Exemplaires> ex;
@@ -156,6 +159,14 @@ public class Livres {
 
 	public void setEtat(Boolean etat) {
 		this.etat = etat;
+	}
+
+	public String getImages() {
+		return images;
+	}
+
+	public void setImages(String images) {
+		this.images = images;
 	}
 	
 	

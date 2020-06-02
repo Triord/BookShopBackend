@@ -4,6 +4,7 @@ import java.util.*;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,22 +18,25 @@ public class JwtUserDetails implements UserDetails {
   private final String email;
   private final String mdp;
   private final Collection<? extends GrantedAuthority> authorities;
+  
 
   public JwtUserDetails(int id, String email, String mdp, Set<Roles> set) {
     this.id = id;
     this.email = email;
     this.mdp = mdp;
-
+   
     List<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
     
     //String[] roles = set.split(",");
     for(Roles r:set) {
-    	authorities.add(new SimpleGrantedAuthority(r.getNom()));
+    	authorities.add(new SimpleGrantedAuthority("ROLE_"+r.getNom()));
     }
 
     this.authorities = authorities;
+    
+    
   }
-
+  	
  
 
 @JsonIgnore

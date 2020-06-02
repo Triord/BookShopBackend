@@ -4,6 +4,7 @@ import java.util.Optional;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -34,12 +35,13 @@ public class JwtInMemoryUserDetailsService implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-    
+	  
 	  System.out.println("email");
 	  Optional<Utilisateurs> user = userRepo.findByEmail(email);
-	
-	  
 	  Optional<JwtUserDetails> userDetails = Optional.empty();
+	  
+	  
+	  
 	  
 	  if(user.isPresent()) {
 		  userDetails = Optional.of(new JwtUserDetails(user.get().getIdUtilisateur(),user.get().getEmail(),user.get().getMdp(),user.get().getRole())); 

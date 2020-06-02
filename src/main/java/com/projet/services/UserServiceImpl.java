@@ -6,6 +6,8 @@ import java.util.*;
 
 import org.hibernate.hql.internal.ast.tree.DisplayableNode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.projet.beans.Critiques;
@@ -16,6 +18,7 @@ import com.projet.beans.Reponse;
 import com.projet.beans.Roles;
 import com.projet.beans.Utilisateurs;
 import com.projet.exceptions.ProduitIntrouvableException;
+import com.projet.jwt.JwtUserDetails;
 import com.projet.repositories.CritiqueRepository;
 import com.projet.repositories.QuestionRepo;
 import com.projet.repositories.RedevanceRepo;
@@ -200,7 +203,9 @@ public class UserServiceImpl implements UserService  {
 
 	}
 
-
+		
+	
+	
 
 
 

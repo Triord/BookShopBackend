@@ -52,6 +52,8 @@ public class JwtAuthenticationRestController {
     final UserDetails userDetails = jwtInMemoryUserDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 
     final String token = jwtTokenUtil.generateToken(userDetails);
+    
+   
 
     return ResponseEntity.ok(new JwtTokenResponse(token));
   }

@@ -105,7 +105,7 @@ public class Locations {
 		this.dateLocation = dateLocation;
 	}
 
-	
+	@JsonIgnore
 	public Utilisateurs getUser() {
 		return user;
 	}

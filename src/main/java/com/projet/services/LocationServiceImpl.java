@@ -1,5 +1,6 @@
 package com.projet.services;
 
+import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -11,7 +12,14 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+import org.omg.CORBA.portable.ValueOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -19,8 +27,10 @@ import com.projet.beans.Amendes;
 import com.projet.beans.Exemplaires;
 import com.projet.beans.Livres;
 import com.projet.beans.Locations;
+import com.projet.beans.Roles;
 import com.projet.beans.Utilisateurs;
 import com.projet.exceptions.ProduitIntrouvableException;
+import com.projet.jwt.JwtUserDetails;
 import com.projet.repositories.AmendeRepo;
 import com.projet.repositories.BookRepository;
 import com.projet.repositories.ExemplaireRepo;
@@ -46,22 +56,40 @@ public class LocationServiceImpl implements LocationService {
 		return lkRep.save(loc);
 		
 	}
+	
+	
 	public Locations louer(Locations loc) {
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (principal instanceof JwtUserDetails  ) {
+		int id = ((JwtUserDetails)principal).getId();
+		
+		System.out.println(((JwtUserDetails)principal).getAuthorities());
+		Utilisateurs user = new Utilisateurs();
+		user.setIdUtilisateur(id);
+		
 		LocalDateTime t = LocalDateTime.now();
+		
 		Date dateLoc = Date.from( t.atZone( ZoneId.systemDefault()).toInstant());
 		Date dateDebutLoc = Date.from( t.atZone( ZoneId.systemDefault()).toInstant().plusSeconds(86400));
+		System.out.println(dateDebutLoc);
 		Date dateFinLoc = Date.from( t.atZone( ZoneId.systemDefault()).toInstant().plusSeconds(2592000));
 		loc.setDateLocation(dateLoc);
 		loc.setdDebutLocation(dateDebutLoc);
 		loc.setdFinLocation(dateFinLoc);
-		
-		
-		Livres book = bkRep.findById(loc.getLivre().getIdlivre()).get();
-		
-		
-		if (!book.getEtat()) {
-			throw new ProduitIntrouvableException("le livre est indisponible");
+		loc.setUser(user);
+			
+		} else {
+		String id = principal.toString();
 		}
+		
+
+		
+		//Livres book = bkRep.findById(loc.getLivre().getIdlivre()).get();
+		
+		
+	//	if (!book.getEtat()) {
+			//throw new ProduitIntrouvableException("le livre est indisponible");
+		//}
 
 
 		lkRep.save(loc);
@@ -104,4 +132,23 @@ public class LocationServiceImpl implements LocationService {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public List<Locations> locByIdUSer(){
+	Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	int id = -1;
+	if (principal instanceof JwtUserDetails) {
+	id = ((JwtUserDetails)principal).getId();
+	
+	
+	
+	}
+	return lkRep.findLocByIdUser(id);
+	}
+	
+	
+	
+	
+
+	
+	
 	}
