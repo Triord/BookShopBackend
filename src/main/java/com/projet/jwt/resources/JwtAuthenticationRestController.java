@@ -1,5 +1,7 @@
 package com.projet.jwt.resources;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Objects;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +14,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -23,6 +26,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.projet.jwt.JwtTokenUtil;
 import com.projet.jwt.JwtUserDetails;
+
+import io.jsonwebtoken.JwtParser;
+import io.jsonwebtoken.Jwts;
 
 
 
@@ -39,6 +45,7 @@ public class JwtAuthenticationRestController {
 
   @Autowired
   private JwtTokenUtil jwtTokenUtil;
+  
 
   @Autowired
   private UserDetailsService jwtInMemoryUserDetailsService;
@@ -47,13 +54,16 @@ public class JwtAuthenticationRestController {
   public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtTokenRequest authenticationRequest)
       throws AuthenticationException {
 	  
+	  
     authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
+    
     final UserDetails userDetails = jwtInMemoryUserDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-
+  
+     
     final String token = jwtTokenUtil.generateToken(userDetails);
     
-   
+    
 
     return ResponseEntity.ok(new JwtTokenResponse(token));
   }

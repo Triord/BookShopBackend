@@ -16,6 +16,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -99,7 +100,7 @@ public class UserController {
 	@Autowired
 	private RedevanceRepo red;
 
-	@Secured("ROLE_lecteur")
+	@Secured("ROLE_manaGeneral")
 	@RequestMapping(value = "/louer", method = RequestMethod.POST)
 	public Locations Louer(@RequestBody Locations loc){
 		locS.louer(loc);
@@ -107,7 +108,7 @@ public class UserController {
 		return loc;
 
 	}
-	
+
 	
 	/*@GetMapping("/check/{id}")
 	public Locations checkLoc(@PathVariable int id,Model model) throws ParseException {
@@ -175,6 +176,13 @@ public class UserController {
 	public List<Roles> allRoles(Model model) {
 		List<Roles> role = (List<Roles>) roleRepo.findAll();
 		return role;
+	}
+	
+	@GetMapping("/role/{id}")
+	public Optional<Roles> getRole(@PathVariable int id,Model model) {
+		Optional<Roles> r = roleRepo.findById(id);
+
+		return r;
 	}
 	@RequestMapping(value="/test1", method = RequestMethod.GET)
 	public List<Locations> locByIdUser(Model model){

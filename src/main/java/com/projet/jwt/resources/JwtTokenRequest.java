@@ -1,6 +1,15 @@
 package com.projet.jwt.resources;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import com.projet.beans.Roles;
 
 
 public class  JwtTokenRequest implements Serializable {
@@ -9,15 +18,19 @@ public class  JwtTokenRequest implements Serializable {
 
   private String username;
     private String password;
+    
+    
+    
 
     public JwtTokenRequest() {
         super();
     }
 
-    public JwtTokenRequest(String username, String password) {
+    public JwtTokenRequest(String username, String password , Set<Roles> set) {
         this.setUsername(username);
         this.setPassword(password);
     }
+        
 
     public String getUsername() {
         return this.username;
@@ -34,5 +47,8 @@ public class  JwtTokenRequest implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
+
+	
+    
 }
 

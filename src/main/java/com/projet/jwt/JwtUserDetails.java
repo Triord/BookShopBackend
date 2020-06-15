@@ -29,9 +29,14 @@ public class JwtUserDetails implements UserDetails {
     
     //String[] roles = set.split(",");
     for(Roles r:set) {
+    	if (r.getIdRole() >1) {
+			
+		
     	authorities.add(new SimpleGrantedAuthority("ROLE_"+r.getNom()));
+    	authorities.add(new SimpleGrantedAuthority(String.valueOf(r.getIdRole())));
+    	}
     }
-
+    
     this.authorities = authorities;
     
     

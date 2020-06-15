@@ -1,7 +1,9 @@
 package com.projet.beans;
 
+import java.beans.Transient;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -15,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -55,15 +58,21 @@ public class Locations {
 	@Column(name="dateLocation")
 	@Temporal(TemporalType.DATE)
 	Date dateLocation;
+	
+	
 
 	@ManyToOne(cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "idUtilisateur",nullable = false)
 	private Utilisateurs user;
 
-	@ManyToOne(cascade = { CascadeType.MERGE })
-	@JoinColumn(name = "idLivre",nullable = false)
-	private Livres livre;
 
+	@ManyToMany(cascade = { CascadeType.MERGE })
+	@JoinTable(
+			name = "livreLouer", 
+			joinColumns = { @JoinColumn(name = "idLocation") }, 
+			inverseJoinColumns = { @JoinColumn(name = "idLivre") }
+			)
+	private Set<Livres> livre = new HashSet<>();
 
 	@ManyToMany(cascade = { CascadeType.MERGE })
 	@JoinTable(
@@ -72,6 +81,8 @@ public class Locations {
 			inverseJoinColumns = { @JoinColumn(name = "idLivre") }
 			)
 	private Set<Livres> book = new HashSet<>();
+	
+
 
 	public int getIdLocation() {
 		return idLocation;
@@ -121,13 +132,17 @@ public class Locations {
 	public void setUser(Utilisateurs user) {
 		this.user = user;
 	}
-	
-	public Livres getLivre() {
+
+	public Set<Livres> getLivre() {
 		return livre;
 	}
 
-	public void setLivre(Livres livre) {
+	public void setLivre(Set<Livres> livre) {
 		this.livre = livre;
 	}
+	
+	
 
+	
+	
 }

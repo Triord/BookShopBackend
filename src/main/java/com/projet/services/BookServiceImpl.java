@@ -51,7 +51,6 @@ public class BookServiceImpl implements BookService{
 		livre.setPrix(livre.getPrix());
 		livre.setEtat(livre.getEtat());
 		livre.setEx(livre.getEx());
-		livre.setLoc(livre.getLoc());
 		livre = livreRep.save(livre);
 		return livre;
 	}

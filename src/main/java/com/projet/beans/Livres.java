@@ -63,14 +63,18 @@ public class Livres {
 	@OneToMany(mappedBy = "livres",fetch = FetchType.LAZY,cascade = CascadeType.ALL)	
 	private Set<Exemplaires> ex;
 
-	@OneToMany(mappedBy = "livre",fetch = FetchType.LAZY,cascade = CascadeType.MERGE)	
-	private Set<Locations> loc;
+
+	
+
 
 	@OneToMany(mappedBy = "livre",fetch = FetchType.LAZY,cascade = CascadeType.MERGE)	
 	private Set<Critiques> crit;
 
 	@ManyToMany(mappedBy = "book")
 	private Set<Locations> location = new HashSet<>();
+	
+	@ManyToMany(mappedBy = "book")
+	private Set<Locations> livre = new HashSet<>();
 
 	@JsonIgnore
 	public Set<Locations> getLocation() {
@@ -136,15 +140,7 @@ public class Livres {
 	public void setEx(Set<Exemplaires> ex) {
 		this.ex = ex;
 	}
-	@JsonIgnore
-	public Set<Locations> getLoc() {
-		return loc;
-	}
 
-	public void setLoc(Set<Locations> loc) {
-		this.loc = loc;
-	}
-	
 	public Set<Critiques> getCrit() {
 		return crit;
 	}
@@ -168,7 +164,16 @@ public class Livres {
 	public void setImages(String images) {
 		this.images = images;
 	}
-	
+
+	public Set<Locations> getLivre() {
+		return livre;
+	}
+
+	public void setLivre(Set<Locations> livre) {
+		this.livre = livre;
+	}
+
+
 	
 
 
