@@ -2,6 +2,7 @@ package com.projet.services;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -25,6 +26,8 @@ public class ExemplServiceImpl implements ExemplService {
 	public Set<Exemplaires> allEx(){
 		Set<Exemplaires> ex = new HashSet<Exemplaires>((Collection<Exemplaires>) exRep.findAll());
 		return ex;
-	}
+	} 
+	
+	
 	
 }	

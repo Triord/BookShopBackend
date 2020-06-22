@@ -33,33 +33,30 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @Table(name = "exemplaires")
 @JsonIdentityInfo(
 		generator = ObjectIdGenerators.PropertyGenerator.class,
-		property = "id")
+		property = "idExemplaire")
 public class Exemplaires {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="idexemplaire", nullable=false)
-	int id;
+	@Column(name="idExemplaire", nullable=false)
+	int idExemplaire;
 
 	@Column(name="etat")
 	int etat;
 
-	@ManyToOne(cascade = { CascadeType.MERGE })
+	@ManyToOne(cascade = { CascadeType.ALL })
 	@JoinColumn(name = "idlivre", nullable = false)
 	private Livres livres;
 
-	@ManyToOne(cascade = { CascadeType.MERGE })
+	@ManyToOne(cascade = { CascadeType.ALL })
 	@JoinColumn(name = "idBibliot", nullable = false)
 	private Bibliotheque bibliotheques;
 
-
-	
-	
-	public int getId() {
-		return id;
+	public int getIdExemplaire() {
+		return idExemplaire;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setIdExemplaire(int idExemplaire) {
+		this.idExemplaire = idExemplaire;
 	}
 
 	public int getEtat() {
@@ -70,7 +67,6 @@ public class Exemplaires {
 		this.etat = etat;
 	}
 
-
 	public Livres getLivres() {
 		return livres;
 	}
@@ -78,7 +74,7 @@ public class Exemplaires {
 	public void setLivres(Livres livres) {
 		this.livres = livres;
 	}
-	//@JsonIgnore
+
 	public Bibliotheque getBibliotheques() {
 		return bibliotheques;
 	}
@@ -86,6 +82,7 @@ public class Exemplaires {
 	public void setBibliotheques(Bibliotheque bibliotheques) {
 		this.bibliotheques = bibliotheques;
 	}
+
 
 	
 

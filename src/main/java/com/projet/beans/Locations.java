@@ -1,6 +1,7 @@
 package com.projet.beans;
 
 import java.beans.Transient;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -59,6 +60,8 @@ public class Locations {
 	@Temporal(TemporalType.DATE)
 	Date dateLocation;
 	
+	@Column(name="priceTotal")
+	float priceTotal;
 	
 
 	@ManyToOne(cascade = { CascadeType.MERGE })
@@ -80,7 +83,7 @@ public class Locations {
 			joinColumns = { @JoinColumn(name = "idLocation") }, 
 			inverseJoinColumns = { @JoinColumn(name = "idLivre") }
 			)
-	private Set<Livres> book = new HashSet<>();
+	private List<Livres> book = new ArrayList<>();
 	
 
 
@@ -121,24 +124,33 @@ public class Locations {
 		return user;
 	}
 
-	public Set<Livres> getBook() {
+	
+	public List<Livres> getBook() {
 		return book;
 	}
-	@JsonIgnore
-	public void setBook(Set<Livres> book) {
+
+	public void setBook(List<Livres> book) {
 		this.book = book;
 	}
-	
+
 	public void setUser(Utilisateurs user) {
 		this.user = user;
 	}
-
+	
 	public Set<Livres> getLivre() {
 		return livre;
 	}
 
 	public void setLivre(Set<Livres> livre) {
 		this.livre = livre;
+	}
+
+	public float getPriceTotal() {
+		return priceTotal;
+	}
+
+	public void setPriceTotal(float priceTotal) {
+		this.priceTotal = priceTotal;
 	}
 	
 	

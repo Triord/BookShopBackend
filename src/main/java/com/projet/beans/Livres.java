@@ -59,15 +59,14 @@ public class Livres {
 	
 	@Column(name="images")
 	String images;
+	
+	@Column(name="quantity")
+	Integer quantity;
 
 	@OneToMany(mappedBy = "livres",fetch = FetchType.LAZY,cascade = CascadeType.ALL)	
 	private Set<Exemplaires> ex;
 
-
-	
-
-
-	@OneToMany(mappedBy = "livre",fetch = FetchType.LAZY,cascade = CascadeType.MERGE)	
+	@OneToMany(mappedBy = "livre",fetch = FetchType.LAZY,cascade = CascadeType.ALL)	
 	private Set<Critiques> crit;
 
 	@ManyToMany(mappedBy = "book")
@@ -75,15 +74,6 @@ public class Livres {
 	
 	@ManyToMany(mappedBy = "book")
 	private Set<Locations> livre = new HashSet<>();
-
-	@JsonIgnore
-	public Set<Locations> getLocation() {
-		return location;
-	}
-
-	public void setLocation(Set<Locations> location) {
-		this.location = location;
-	}
 
 	public int getIdlivre() {
 		return idlivre;
@@ -132,22 +122,6 @@ public class Livres {
 	public void setEdition(String edition) {
 		this.edition = edition;
 	}
-	@JsonIgnore
-	public Set<Exemplaires> getEx() {
-		return ex;
-	}
-
-	public void setEx(Set<Exemplaires> ex) {
-		this.ex = ex;
-	}
-
-	public Set<Critiques> getCrit() {
-		return crit;
-	}
-
-	public void setCrit(Set<Critiques> crit) {
-		this.crit = crit;
-	}
 
 	public Boolean getEtat() {
 		return etat;
@@ -165,6 +139,30 @@ public class Livres {
 		this.images = images;
 	}
 
+	public Set<Exemplaires> getEx() {
+		return ex;
+	}
+
+	public void setEx(Set<Exemplaires> ex) {
+		this.ex = ex;
+	}
+	@JsonIgnore
+	public Set<Critiques> getCrit() {
+		return crit;
+	}
+
+	public void setCrit(Set<Critiques> crit) {
+		this.crit = crit;
+	}
+	@JsonIgnore
+	public Set<Locations> getLocation() {
+		return location;
+	}
+
+	public void setLocation(Set<Locations> location) {
+		this.location = location;
+	}
+
 	public Set<Locations> getLivre() {
 		return livre;
 	}
@@ -173,6 +171,17 @@ public class Livres {
 		this.livre = livre;
 	}
 
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
+
+
+
+	
 
 	
 

@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,6 +53,8 @@ import com.projet.repositories.RedevanceRepo;
 import com.projet.repositories.RoleRepository;
 import com.projet.repositories.UserRepository;
 import com.projet.services.BookServiceImpl;
+import com.projet.services.ExemplService;
+import com.projet.services.ExemplServiceImpl;
 import com.projet.services.LocationService;
 import com.projet.services.LocationServiceImpl;
 import com.projet.services.Password;
@@ -69,6 +72,8 @@ public class UserController {
 	private BookRepository bkR;
 	@Autowired 
 	private AmendeRepo aRep;
+	@Autowired
+	private ExemplServiceImpl exS;
 	@Autowired
 	private UserRepository userRepo;
 	@Autowired
@@ -100,13 +105,30 @@ public class UserController {
 	@Autowired
 	private RedevanceRepo red;
 
-	@Secured("ROLE_manaGeneral")
+	
 	@RequestMapping(value = "/louer", method = RequestMethod.POST)
 	public Locations Louer(@RequestBody Locations loc){
 		locS.louer(loc);
 
 		return loc;
 
+	}
+	@CrossOrigin(origins = "http://localhost:4200")
+	@RequestMapping(value="/rendre/{id}", method = RequestMethod.DELETE)
+	public void rendre(@PathVariable int id, Model model) {
+		Locations loc  = locRep.findById(id).get();
+		for (Livres l: loc.getLivre()) {
+			int ajout = l.getQuantity();
+			ajout++;
+			System.out.println(ajout);
+			
+			l.setQuantity(ajout);
+			System.out.println(ajout);
+			bkR.save(l);
+		}
+		 
+		locRep.deleteById(id);
+		
 	}
 
 	
@@ -138,8 +160,9 @@ public class UserController {
 		return loc;
 	}*/
 	@GetMapping("/check")
-	public void checkAllLoc() {
-	locS.check();
+	public Amendes checkAllLoc() {
+	Amendes am = locS.check();
+	return am;
 	
 		
 	}
@@ -188,7 +211,7 @@ public class UserController {
 	public List<Locations> locByIdUser(Model model){
 		return locS.locByIdUSer();
 	}
-	
+
 	
 	
 }

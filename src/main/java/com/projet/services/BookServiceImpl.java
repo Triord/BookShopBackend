@@ -42,14 +42,14 @@ public class BookServiceImpl implements BookService{
 
 	public Livres UpdateBooks(int id,Livres livre) {
 		
-		 Optional<Livres> livres = livreRep.findById(id);
+			
 		livre.setIdlivre(livre.getIdlivre());
 		livre.setNom(livre.getNom());
 		livre.setIsbn(livre.getIsbn());
 		livre.setDescriptif(livre.getDescriptif());
 		livre.setEdition(livre.getEdition());
 		livre.setPrix(livre.getPrix());
-		livre.setEtat(livre.getEtat());
+		livre.setEtat(true);
 		livre.setEx(livre.getEx());
 		livre = livreRep.save(livre);
 		return livre;

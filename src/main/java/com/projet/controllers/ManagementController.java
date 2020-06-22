@@ -1,3 +1,4 @@
+
 package com.projet.controllers;
 
 import java.util.Collection;
@@ -7,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.servlet.WebMvcProperties.LocaleResolver;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -29,12 +31,14 @@ import com.projet.beans.Reponse;
 import com.projet.beans.Roles;
 import com.projet.beans.Utilisateurs;
 import com.projet.repositories.BookRepository;
+import com.projet.repositories.LocRepository;
 import com.projet.repositories.RedevanceRepo;
 import com.projet.repositories.ReponseRepo;
 import com.projet.repositories.RoleRepository;
 import com.projet.repositories.UserRepository;
 import com.projet.repositories.biblioRepo;
 import com.projet.services.BookServiceImpl;
+import com.projet.services.LocationServiceImpl;
 import com.projet.services.ServiceRequest;
 import com.projet.services.UserServiceImpl;
 import com.projet.services.biblioService;
@@ -46,15 +50,17 @@ public class ManagementController {
 	private BookRepository bkRep;
 	@Autowired
 	private BookServiceImpl bkS;
+	@Autowired
+	private LocRepository lkRep;
 	
 	@RequestMapping(value = "/Livres", method = RequestMethod.POST)
 	public ServiceRequest addLivre(@RequestBody Livres livre) {
 		return bkS.addBook(livre);
 	}
 	
-	@RequestMapping(value = "/Livres/{id}", method = RequestMethod.PUT)
-	public Livres upLivre(@RequestBody Livres livre, @PathVariable int id) {
-		return bkS.UpdateBooks(id, livre);
+	@RequestMapping(value = "/Livres", method = RequestMethod.PUT)
+	public Livres upLivre(@RequestBody Livres livre) {
+		return bkRep.save(livre);
 	}
 	@PostMapping("/addbook")
 	public Livres addlivre(@RequestBody Livres book) {
@@ -63,6 +69,10 @@ public class ManagementController {
 	@DeleteMapping("/Livres/{id}")
 	public void DelBook(@PathVariable int id) {
 	 bkS.DelBook(id);
+	}
+	@DeleteMapping("/loc/{id}")
+	public void DelLoc(@PathVariable int id) {
+	 lkRep.deleteById(id);
 	}
 	
 	@Autowired

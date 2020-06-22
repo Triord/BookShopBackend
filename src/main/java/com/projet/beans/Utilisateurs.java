@@ -55,6 +55,9 @@ public class Utilisateurs {
 	@Column(name="mdp")
 	String mdp;
 	
+	@Column(name="etat")
+	boolean etat;
+	
 	@ManyToMany(cascade = { CascadeType.MERGE },fetch = FetchType.EAGER)
     @JoinTable(
 	        name = "roleUser", 
@@ -183,6 +186,14 @@ public class Utilisateurs {
 		this.redevance = redevance;
 	}
 
+	public boolean isEtat() {
+		return etat;
+	}
+
+	public void setEtat(boolean etat) {
+		this.etat = etat;
+	}
+	
 	
 
 

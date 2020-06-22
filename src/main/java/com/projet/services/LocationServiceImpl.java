@@ -5,10 +5,12 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -35,6 +37,7 @@ import com.projet.repositories.AmendeRepo;
 import com.projet.repositories.BookRepository;
 import com.projet.repositories.ExemplaireRepo;
 import com.projet.repositories.LocRepository;
+import com.projet.repositories.UserRepository;
 @Service
 public class LocationServiceImpl implements LocationService {
 	
@@ -42,7 +45,10 @@ public class LocationServiceImpl implements LocationService {
 	private BookRepository bkRep;
 	@Autowired
 	private LocRepository lkRep;
-	
+	@Autowired
+	private ExemplaireRepo exRep;
+	@Autowired
+	private UserRepository uRep;
 	
 	public Set<Locations> allLoc(){
 		Set<Locations> l = new HashSet<Locations>((Collection<Locations>) lkRep.findAll());
@@ -58,7 +64,8 @@ public class LocationServiceImpl implements LocationService {
 	}
 	
 	
-	public Locations louer(Locations loc) {
+	public Locations louer(Locations loc){
+		
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		if (principal instanceof JwtUserDetails  ) {
 		int id = ((JwtUserDetails)principal).getId();
@@ -77,7 +84,8 @@ public class LocationServiceImpl implements LocationService {
 		loc.setdDebutLocation(dateDebutLoc);
 		loc.setdFinLocation(dateFinLoc);
 		loc.setUser(user);
-			
+		
+		
 		} else {
 		String id = principal.toString();
 		}
@@ -90,9 +98,34 @@ public class LocationServiceImpl implements LocationService {
 	//	if (!book.getEtat()) {
 			//throw new ProduitIntrouvableException("le livre est indisponible");
 		//}
-
-
+	
+		
+		Utilisateurs user = loc.getUser();
+		int id = user.getIdUtilisateur();
+		Optional<Utilisateurs> userr= uRep.findById(id);
+		System.out.println(userr.get().isEtat());
+		
+		if (!userr.get().isEtat()) {
+			System.out.println("loc accepté");
+		
+		
 		lkRep.save(loc);
+		for(Livres l: loc.getLivre()) {
+			int retrait = l.getQuantity();
+			retrait-- ;
+			retrait += 1;
+			System.out.println(retrait);
+			l.setQuantity(retrait);
+			if (l.getQuantity() <=0) {
+				l.setEtat(true);
+			}
+			
+			bkRep.save(l);
+			}
+		}
+		else {
+			System.out.println("erreur");
+		}
 		return loc;
 	}
 	@Autowired 
@@ -100,10 +133,11 @@ public class LocationServiceImpl implements LocationService {
 	@Autowired
 	private LocationServiceImpl locS;
 	
-	public void check() {
+	public Amendes check() {
 		
 		Set <Locations> loc =  locS.allLoc();
-
+		Amendes amende = new Amendes();
+		
 		for (Locations lo : loc) {
 			Date d = new Date();
 
@@ -115,19 +149,24 @@ public class LocationServiceImpl implements LocationService {
 
 			int delai = n.intValue();
 
-			int montant = (int) (delai*0.50);
+			int montant = (int) (delai*-0.50);
 
 
 			if (lo.getdFinLocation().before(d) ) {
-				Amendes amende = new Amendes();
+				
 				amende.setDateAmende(d);
-				amende.setDelaiDepassement(delai);
+				amende.setDelaiDepassement(Math.abs(delai));
 				amende.setMontant(montant);
 				amende.setUser(lo.getUser());
+				Utilisateurs user = lo.getUser();
+				user.setEtat(true);
+				uRep.save(user);
 				aRep.save(amende);
 
 			}
+			
 		}
+		return amende;
 		
 		// TODO Auto-generated method stub
 		

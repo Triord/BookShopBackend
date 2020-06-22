@@ -33,7 +33,7 @@ public class ExemplController {
 
 	@Autowired
 	private ExemplaireRepo exRepo;
-	@Autowired 
+	@Autowired  
 	private ExemplServiceImpl exService;
 
 	@GetMapping("/exemplaire")
@@ -52,5 +52,11 @@ public class ExemplController {
 		return ex;
 	    			
 	}
+	@GetMapping("qttLivre/{id}")
+	public int getQuantité(@PathVariable int id,Model model){
+		
+		return exRepo.findqqt(id);
+	}
+	
 	
 }

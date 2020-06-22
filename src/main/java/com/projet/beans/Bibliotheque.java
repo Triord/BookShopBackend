@@ -31,12 +31,12 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @Table(name = "bibliotheques")
 @JsonIdentityInfo(
 		generator = ObjectIdGenerators.PropertyGenerator.class,
-		property = "idBiblio")
+		property = "idBibliot")
 public class Bibliotheque{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name= "idBibliot", nullable=false)
-	private int idBiblio;
+	private int idBibliot;
 
 	@Column(name="nom")
 	private String nom;
@@ -48,7 +48,7 @@ public class Bibliotheque{
 	private String localisation;
 
 
-	@OneToMany(mappedBy = "bibliotheques",fetch = FetchType.LAZY,cascade = CascadeType.DETACH)
+	@OneToMany(mappedBy = "bibliotheques",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
 	public Set<Exemplaires> ex;
 	
 	@ManyToOne(cascade = { CascadeType.MERGE },fetch = FetchType.EAGER)
@@ -56,12 +56,12 @@ public class Bibliotheque{
 	@JoinColumn(name = "idManaG")
 	private ManaGeneral manaG;
 
-	public int getIdBiblio() {
-		return idBiblio;
+	public int getIdBibliot() {
+		return idBibliot;
 	}
 
-	public void setIdBiblio(int idBiblio) {
-		this.idBiblio = idBiblio;
+	public void setIdBibliot(int idBibliot) {
+		this.idBibliot = idBibliot;
 	}
 
 	public String getNom() {
@@ -104,5 +104,9 @@ public class Bibliotheque{
 		this.manaG = manaG;
 	}
 
+	public void setEx(Set<Exemplaires> ex) {
+		this.ex = ex;
+	}
+	
 	
 }
