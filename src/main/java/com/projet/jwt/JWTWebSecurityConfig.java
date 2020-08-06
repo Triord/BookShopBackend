@@ -1,5 +1,8 @@
 package com.projet.jwt;
 
+import java.util.Collection;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +16,9 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,6 +38,8 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserDetailsService jwtInMemoryUserDetailsService;
+    
+
 
     @Autowired
     private JwtTokenAuthorizationOncePerRequestFilter jwtAuthenticationTokenFilter;
@@ -59,12 +67,17 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
+    	
         httpSecurity
             .csrf().disable()
             .exceptionHandling().authenticationEntryPoint(jwtUnAuthorizedResponseAuthenticationEntryPoint).and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
             .authorizeRequests()
-            .anyRequest().authenticated();
+            .antMatchers("/user/**").hasRole("manaGeneral")
+            .antMatchers("/role").hasRole("manaGeneral")
+            .antMatchers("/bibliothequaire").hasRole("manaGeneral")
+            .antMatchers("/manaBiblio").hasRole("manaGeneral");
+            
 
        httpSecurity
             .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
@@ -73,11 +86,11 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
             .headers()
             .frameOptions().sameOrigin()  //H2 Console Needs this setting
             .cacheControl(); //disable caching
-    }
-
+        }
+    
     @Override
     public void configure(WebSecurity webSecurity) throws Exception {
-        webSecurity
+        webSecurity        
             .ignoring()
             .antMatchers(
                 HttpMethod.POST,
@@ -93,6 +106,8 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
             .ignoring()
             .antMatchers("/h2-console/**/**");//Should not be in Production!
+        
     }
+    
 }
 
